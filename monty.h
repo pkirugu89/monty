@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <ctype.h>
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -33,6 +35,15 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+typedef struct global
+{
+	char *buf;
+	int count;
+	char *arg;
+	stack_t *head;
+} global_t;
+/* Global Variable */
+extern global_t gl;
 /* Function prototypes for opcode functions */
 /* prototype for adding an element on a stack */
 void push_opcode(stack_t **stack, unsigned int line_number);
@@ -40,13 +51,14 @@ void push_opcode(stack_t **stack, unsigned int line_number);
 void pop_opcode(stack_t **stack, unsigned int line_number);
 /* prototype for printing all elements in a stack */
 void pall_opcode(stack_t **stack, unsigned int line_number);
+/* prototype for printing an integer */
+void pint_opcode(stack_t **stack, unsigned int line_number);
 /* prototype for finding the appropriate opcode function */
-instruction_t *find_instruction(char *opcode);
-/* prototype that checks if a str is numeric */
-int is_numeric(const char *str);
+void (*find_instruction(char *str))(stack_t **stack, unsigned int line_number);
 /* function prototypes for stack functions */
-void push_stack(stack_t **stack, unsigned int line_num);
-void pop_stack(stack_t **stack, unsigned int line_num);
-void free_stack(stack_t **stack);
+stack_t *add_dnodeint(stack_t **head, int n);
+stack_t *add_dnodeint_end(stack_t **head, int n);
+void free_stack(void);
+void free_stack_t(stack_t *head);
 
 #endif
